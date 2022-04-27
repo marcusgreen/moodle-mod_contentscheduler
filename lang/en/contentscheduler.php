@@ -25,9 +25,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-// $string['pluginname'] = 'Content Scheduler';
 $string['modulename'] = 'Content Scheduler';
+$string['modulenameplural'] = 'Content Schedulers';
+$string['pluginname'] = 'Content Scheduler';
 $string['name'] = 'Name';
+$string['timing'] = 'Timing';
 $string['activities'] = 'Activities';
 $string['contentschedulersettings'] = 'Settings';
 $string['contentschedulerfieldset'] = 'Fieldset';

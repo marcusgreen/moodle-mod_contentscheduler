@@ -41,13 +41,13 @@ class mod_contentscheduler_mod_form extends moodleform_mod {
      * Defines forms elements
      */
     public function definition() {
-        global $CFG,$DB,$OUTPUT;
-        $courseid = required_param('course',PARAM_INT);
+        global $CFG,$DB,$COURSE,$OUTPUT;
+        $activity = 'quiz';
         require_once($CFG->dirroot . '/course/externallib.php');
 
-        $options = array(array("name" => "modname", "value" => "quiz"));
+        $options = [["name" => "modname", "value" => $activity]];
 
-        $contents = \core_course_external::get_course_contents($courseid, $options);
+        $contents = \core_course_external::get_course_contents($COURSE->id, $options);
 
         $mform = $this->_form;
 
@@ -55,13 +55,13 @@ class mod_contentscheduler_mod_form extends moodleform_mod {
         $mform->addElement('header', 'general', get_string('general', 'form'));
 
         // Adding the standard "name" field.
-        $mform->addElement('text', 'name', get_string('name', 'mod_contentscheduler'), array('size' => '64'));
+        $mform->addElement('text', 'name', get_string('name', 'contentscheduler'), ['size' => '64']);
 
         $mform->addRule('name', null, 'required', null, 'client');
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
         $mform->addHelpButton('name', 'contentschedulername', 'mod_contentscheduler');
 
-        $mform->addElement('header', 'timing', get_string('timing', 'quiz'));
+        $mform->addElement('header', 'timing', get_string('timing', 'contentscheduler'));
         $mform->setExpanded('timing');
 
         // Start dates.

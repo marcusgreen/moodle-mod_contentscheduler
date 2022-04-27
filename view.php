@@ -53,7 +53,7 @@ $event->add_record_snapshot('course', $course);
 $event->add_record_snapshot('contentscheduler', $moduleinstance);
 $event->trigger();
 
-$PAGE->set_url('/mod/contentscheduler/view.php', array('id' => $cm->id));
+$PAGE->set_url('/mod/contentscheduler/view.php', ['id' => $cm->id]);
 $PAGE->set_title(format_string($moduleinstance->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($modulecontext);

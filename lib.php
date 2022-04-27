@@ -83,10 +83,11 @@ function contentscheduler_add_instance($moduleinstance, $mform = null) {
  */
 function contentscheduler_update_instance($moduleinstance, $mform = null) {
     global $DB;
-
+    if($data = $mform->get_data()){
+        echo "yes";
+    }
     $moduleinstance->timemodified = time();
     $moduleinstance->id = $moduleinstance->instance;
-
     return $DB->update_record('contentscheduler', $moduleinstance);
 }
 

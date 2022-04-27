@@ -27,8 +27,9 @@ require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
 
 $id = required_param('id', PARAM_INT);
+// $courseid = required_param('courseid', PARAM_INT);
 
-$course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
+$course = $DB->get_record('course', ['id' => $id], '*', MUST_EXIST);
 require_course_login($course);
 
 $coursecontext = context_course::instance($course->id);
@@ -46,8 +47,8 @@ $PAGE->set_context($coursecontext);
 
 echo $OUTPUT->header();
 
-$modulenameplural = get_string('modulenameplural', 'mod_contentscheduler');
-echo $OUTPUT->heading($modulenameplural);
+$pluginnameplural = get_string('pluginnameplural', 'contentscheduler');
+echo $OUTPUT->heading($pluginnameplural);
 
 $contentschedulers = get_all_instances_in_course('contentscheduler', $course);
 

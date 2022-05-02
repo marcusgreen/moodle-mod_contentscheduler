@@ -83,12 +83,47 @@ function contentscheduler_add_instance($moduleinstance, $mform = null) {
  */
 function contentscheduler_update_instance($moduleinstance, $mform = null) {
     global $DB;
-    if($data = $mform->get_data()){
-        echo "yes";
+    if($data = $mform->get_data()) {
+        $week = strtotime('7 day', 0);
+        $start = $data->timestart;
+        $finish = $data->timefinish;
+        $duration = $finish - $start;
+        $weekcount = $duration / $week;
+        $weekspersession = $weekcount / $data->sessionsgroup['numberofsessions'];
+        $from = time();
+
+        $activities = get_sequence($data);
+
+
+        foreach($activities as $cmid) {
+                $to = $from + $week;
+                $availability = '{"op":"&","c":[{"type":"date","d":">=","t":'.$from.'},{"type":"date","d":"<","t":'.$to.'}],"showc":[true,true]}';
+                $from = $to;
+                $DB->set_field('course_modules', 'availability', $availability, ['id'=>$cmid]);
+        }
     }
+
     $moduleinstance->timemodified = time();
     $moduleinstance->id = $moduleinstance->instance;
     return $DB->update_record('contentscheduler', $moduleinstance);
+}
+
+function get_sequence($data) {
+    global $DB;
+    $sql = 'select sequence from {course_sections} where course = :course and sequence > "" order by section';
+    $coursesequence = $DB->get_records_sql($sql,['course' => $data->course]);
+    $activitiesordered = [];
+    $i=0;
+    foreach($coursesequence as $item) {
+        $temp= explode(',',$item->sequence);
+        foreach($temp as $t) {
+            if(array_key_exists($t,$data->activities)) {
+                 $activitiesordered[$i] = $t;
+                 $i++;
+            }
+        }
+    }
+    return $activitiesordered;
 }
 
 /**

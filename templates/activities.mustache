@@ -32,12 +32,10 @@
     {
     }
 }}
-<form>
 <table border="1">
-{{#activities}}
-<tr>
-  <td><input type='checkbox' id='cmid_{{id}}' checked '></td>  <td>{{{name}}}</td><td>{{{intro}}}</td>
-</tr>
-{{/activities}}
+    {{#activities}}
+    <tr>
+      <td><input type='checkbox' id='cmid_{{id}}' checked '></td>  <td>{{{name}}}</td><td>{{{intro}}}</td>
+    </tr>
+    {{/activities}}
 </table>
-</form>

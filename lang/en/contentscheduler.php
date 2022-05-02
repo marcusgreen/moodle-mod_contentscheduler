@@ -34,18 +34,22 @@ $string['activities'] = 'Activities';
 $string['contentschedulersettings'] = 'Settings';
 $string['contentschedulerfieldset'] = 'Fieldset';
 $string['start'] = 'Start';
-$string['start_help'] = 'The time periods/intervals that quizzes are available are set here. First at the
-"Start:" section, the day, month and year that the quiz cycle will start is set. The
+$string['start_help'] = 'The time periods/intervals that activities are available are set here. First at the
+"Start:" section, the day, month and year that the activity cycle will start is set. The
 blue calendar will open a pop-up calendar to select dates as an option.';
 $string['finish'] = 'Finish';
-$string['finish_help'] = '"Finish": Is the date that all quizzes/final session will close. The time will remain
+$string['finish_help'] = '"Finish": Is the date that all activities/final session will close. The time will remain
 this time to finish a session before the next one begins.';
 $string['repeat'] = 'Repeat every';
+$string['repeat_text'] = 'Repeat settings help';
 $string['repeat_help'] =
  '"Repeat every:" is an option that decides how long the intervals are. E.g. A new
- set of quizzes will be available every 2 weeks and the currently available ones
+ set of activities will be available every 2 weeks and the currently available ones
  will then become unavailable.';
+$string['weekcount'] = 'Week count';
+$string['weekcount_text'] = 'Week count help description';
 $string['weeks'] = 'week(s)';
+$string['weekcount'] = 'Week count';
 $string['repeatenable'] = 'Enable';
 $string['numberofsessions'] = 'Number of sessions';
 $string['numberofsessions_help'] = '"Number of sessions:" is an option where the total number of sessions/cycles
@@ -57,7 +61,6 @@ session would be 2 weeks, 16 weeks / 8 sessions. However, if the sessions was
 set at 4, then the period would be 4 weeks, 16 weeks/4 sessions. Finally if the
 sessions was 16, it would be a cycle every week.';
 $string['numberofsessionsenable'] = 'Enable';
-$string['quizzespersession'] ='Quizzes per session';
-$string['quzzespersession_help'] ='"Quizzes per session" sets the number of quizzes that are available in each
+$string['activitiespersession'] ='Activities per session';
+$string['quzzespersession_help'] ='"Activities per session" sets the number of activities that are available in each
 session.';
-

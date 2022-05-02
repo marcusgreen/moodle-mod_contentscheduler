@@ -24,7 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot.'/course/moodleform_mod.php');
+require_once($CFG->dirroot . '/course/moodleform_mod.php');
 
 /**
  * Module instance settings form.
@@ -41,9 +41,13 @@ class mod_contentscheduler_mod_form extends moodleform_mod {
      * Defines forms elements
      */
     public function definition() {
-        global $CFG,$DB,$COURSE,$OUTPUT;
-        $activity = 'quiz';
+        global $CFG, $DB, $COURSE, $PAGE;
+
+        $PAGE->requires->js_call_amd('mod_contentscheduler/modform', 'init');
+
         require_once($CFG->dirroot . '/course/externallib.php');
+
+        $activity = 'quiz';
 
         $options = [["name" => "modname", "value" => $activity]];
 
@@ -65,53 +69,64 @@ class mod_contentscheduler_mod_form extends moodleform_mod {
         $mform->setExpanded('timing');
 
         // Start dates.
-        $mform->addElement('date_time_selector', 'start', get_string('start', 'contentscheduler'),
-            self::$datefieldoptions);
-         $mform->addHelpButton('start', 'start', 'contentscheduler');
+        $mform->addElement(
+            'date_time_selector',
+            'timestart',
+            get_string('start', 'contentscheduler'),
+            self::$datefieldoptions
+        );
+        $mform->addHelpButton('start', 'start', 'contentscheduler');
 
-       $selectnumbers = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
-        $group[] = $mform->createElement('select', 'repeat', get_string('repeat','contentscheduler'), $selectnumbers);
-        $group[] = $mform->createElement('html',get_string('weeks','contentscheduler'));
-        $group[] = $mform->createElement('checkbox', 'repeatenable',get_string('repeatenable','contentscheduler'));
-        $mform->addGroup($group,'repeat',get_string('repeat','contentscheduler').'&nbsp;&nbsp;');
+        $group[] = $mform->createElement('text', 'repeat', get_string('repeat', 'contentscheduler'), ['value' => 1, 'size' => '3']);
+        $group[] = $mform->createElement('html', get_string('weeks', 'contentscheduler'));
+        $group[] = $mform->createElement('advcheckbox', 'repeatenable', get_string('repeatenable', 'contentscheduler'));
+        $mform->addGroup($group, 'repeatgroup', get_string('repeat', 'contentscheduler') . '&nbsp;&nbsp;');
         $mform->addHelpButton('repeat', 'repeat', 'mod_contentscheduler');
 
-
         $group = [];
-        $group[] = $mform->createElement('select','numberofsessions',get_string('numberofsessions','contentscheduler'),$selectnumbers);
-        $group[] = $mform->createElement('checkbox', 'numberofsessionsenable',get_string('numberofsessionsenable','contentscheduler'));
-        $mform->addGroup($group,'numberofsessions',get_string('numberofsessions','contentscheduler'));
-        $mform->addHelpButton('numberofsessions', 'numberofsessions', 'mod_contentscheduler');
+        $group[] = $mform->createElement('text', 'numberofsessions', get_string('numberofsessions', 'contentscheduler'), ['value' => 7, 'size' => '3']);
+        $group[] = $mform->createElement('advcheckbox', 'numberofsessionsenable', get_string('numberofsessionsenable', 'contentscheduler'));
+        $mform->addGroup($group, 'sessionsgroup', get_string('numberofsessions', 'contentscheduler'));
+        $mform->addHelpButton('sessionsgroup', 'numberofsessions', 'mod_contentscheduler');
 
-       $mform->addElement('date_time_selector', 'timefinish', get_string('finish', 'contentscheduler'),
-               self::$datefieldoptions);
+        // Finish dates.
+        $mform->addElement(
+            'date_time_selector',
+            'timefinish',
+            get_string('finish', 'contentscheduler'),
+            self::$datefieldoptions
+        );
+        $week = strtotime('7 day', 0);
+        $weekcount = get_config('contentscheduler', 'weekcount');
+        $finishdate = time()+ ($week * $weekcount);
+        $mform->setDefault('timefinish', $finishdate);
 
         $mform->addHelpButton('timefinish', 'timefinish', 'mod_contentscheduler');
 
-       $mform->addElement('select','quzzespersession',get_string('quizzespersession','contentscheduler'),$selectnumbers);
-       $mform->addHelpButton('quzzespersession', 'quzzespersession', 'mod_contentscheduler');
+        $mform->addElement('text', 'activitiespersession', get_string('activitiespersession', 'contentscheduler'), ['value' => 7, 'size' => '3']);
+        $mform->addHelpButton('quzzespersession', 'quzzespersession', 'mod_contentscheduler');
 
-       $mform->addElement('header', 'activities', get_string('activities', 'mod_contentscheduler'));
-       $mform->setExpanded('activities');
-       $data = [];
-       foreach($contents as $content) {
-           if(count($content['modules']) > 0){
-               foreach($content['modules'] as $module) {
-                    $details = $DB->get_record('quiz',['id' => $module['instance']]);
+        $mform->addElement('header', 'activityheader', get_string('activities', 'mod_contentscheduler'));
+        $mform->setExpanded('activityheader');
+        $mform->addElement('checkbox','selectall','Select all');
+        $data = [];
+        foreach ($contents as $content) {
+            if (count($content['modules']) > 0) {
+                foreach ($content['modules'] as $module) {
+                    $details = $DB->get_record('quiz', ['id' => $module['instance']]);
                     $module['intro'] = strip_tags($details->intro);
-                    $data['activities'][] = $module;
-               }
-           }
-       }
-       $out =  $OUTPUT->render_from_template('mod_contentscheduler/activities', $data);
-       $group =[];
-       $group[] =  $mform->createElement('html',$out);
-       $mform->addGroup($group);
+                    $group = [];
+                    $group[$module['id']] =  $mform->createElement('checkbox', $module['id'], $module['name'], $module['intro']);
+                    $mform->addGroup($group, 'activities');
+                }
+            }
+        }
 
-       // Add standard elements.
-         $this->standard_coursemodule_elements();
+
+        // Add standard elements.
+        $this->standard_coursemodule_elements();
 
         // Add standard buttons.
-         $this->add_action_buttons();
+        $this->add_action_buttons();
     }
 }

@@ -37,8 +37,8 @@ $string['start'] = 'Start';
 $string['start_help'] = 'The time periods/intervals that activities are available are set here. First at the
 "Start:" section, the day, month and year that the activity cycle will start is set. The
 blue calendar will open a pop-up calendar to select dates as an option.';
-$string['finish'] = 'Finish';
-$string['finish_help'] = '"Finish": Is the date that all activities/final session will close. The time will remain
+$string['timefinish'] = 'Finish';
+$string['timefinish_help'] = '"Finish": Is the date that all activities/final session will close. The time will remain
 this time to finish a session before the next one begins.';
 $string['repeat'] = 'Repeat every';
 $string['repeat_text'] = 'Repeat settings help';
@@ -62,5 +62,11 @@ set at 4, then the period would be 4 weeks, 16 weeks/4 sessions. Finally if the
 sessions was 16, it would be a cycle every week.';
 $string['numberofsessionsenable'] = 'Enable';
 $string['activitiespersession'] ='Activities per session';
-$string['quzzespersession_help'] ='"Activities per session" sets the number of activities that are available in each
+$string['activitiespersession_help'] ='"Activities per session" sets the number of activities that are available in each
 session.';
+$string['contentschedulername'] = 'String 1';
+$string['pluginadministration'] = 'Content sceduler administration';
+$string['contentschedulername_help'] = 'ABCDE1';
+
+
+

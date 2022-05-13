@@ -30,7 +30,8 @@ defined('MOODLE_INTERNAL') || die();
  * @param string $feature Constant representing the feature.
  * @return true | null True if the feature is supported, null otherwise.
  */
-function contentscheduler_supports($feature) {
+function contentscheduler_supports($feature)
+{
     switch ($feature) {
         case FEATURE_MOD_INTRO:
             return true;
@@ -50,27 +51,78 @@ function contentscheduler_supports($feature) {
  * @param mod_contentscheduler_mod_form $mform The form.
  * @return int The id of the newly inserted record.
  */
-function contentscheduler_add_instance($moduleinstance, $mform = null) {
+function contentscheduler_add_instance($moduleinstance, $mform = null)
+{
     global $DB;
 
     $moduleinstance->timecreated = time();
 
-        //    // Add the database record.
-        //    $update = new stdClass();
-        //    $update->name = $formdata->name;
-        //    $update->timemodified = time();
-        //    $update->timecreated = time();
-        //    $update->course = $formdata->course;
+    //    // Add the database record.
+    //    $update = new stdClass();
+    //    $update->name = $formdata->name;
+    //    $update->timemodified = time();
+    //    $update->timecreated = time();
+    //    $update->course = $formdata->course;
 
     $id = $DB->insert_record('contentscheduler', $moduleinstance);
 
-    if($mform->get_data()){
-
+    if ($mform->get_data()) {
     }
 
     return $id;
 }
 
+function get_contents(int $courseid, $options): array
+{
+    $contents = \core_course_external::get_course_contents($courseid, $options);
+    return $contents;
+}
+
+function show_contents($mform, $contents ){
+    global $DB;
+    foreach ($contents as $content) {
+        if (count($content['modules']) > 0) {
+            foreach ($content['modules'] as $module) {
+                $details = $DB->get_record($module['modname'], ['id' => $module['instance']]);
+                if(isset($details->intro)) {
+                    $module['intro'] = pad($details->intro, 12);
+                 } else {
+                       $module['intro'] = pad(" ",12," ");
+                 }
+                $group = [];
+                $availability  = get_availability($module);
+                $group[$module['id']] =  $mform->createElement('checkbox', $module['id'],pad($module['name'],12), $module['intro'].$availability);
+                $mform->addGroup($group, 'activities','', ' ', true);
+            }
+        }
+    }
+    return $mform;
+}
+function pad($string, $lettercount) {
+    $chopped = mb_substr(strip_tags($string),0,$lettercount);
+    $chopped .= "...";
+
+    $padded =  str_pad($chopped,20, " ");
+    return $padded;
+}
+
+function get_availability($module) {
+        global $DB;
+        $restrictiontext ="";
+
+        $record = $DB->get_record('course_modules', ['id' => $module['id']], 'availability');
+        if($record->availability > "") {
+            $decoded = json_decode($record->availability);
+            foreach($decoded->c as $restriction) {
+                if($restriction->type == "date") {
+                    $operator = $restriction->d;
+                    $datetime = $restriction->t;
+                    $restrictiontext .= $operator . ":".date('D d M Y h:h', $datetime);
+                }
+            }
+        }
+        return $restrictiontext;
+}
 /**
  * Updates an instance of the mod_contentscheduler in the database.
  *
@@ -81,25 +133,39 @@ function contentscheduler_add_instance($moduleinstance, $mform = null) {
  * @param mod_contentscheduler_mod_form $mform The form.
  * @return bool True if successful, false otherwise.
  */
-function contentscheduler_update_instance($moduleinstance, $mform = null) {
+function contentscheduler_update_instance($moduleinstance, $mform = null)
+{
     global $DB;
-    if($data = $mform->get_data()) {
+    if ($data = $mform->get_data()) {
         $week = strtotime('7 day', 0);
-        $start = $data->timestart;
-        $finish = $data->timefinish;
-        $duration = $finish - $start;
+        $activitiespersession = $data->activitiespersession;
+        $cyclestart = $data->timestart;
+        $cyclefinish = $data->timefinish;
+        $duration = $cyclefinish - $cyclestart;
         $weekcount = $duration / $week;
-        $weekspersession = $weekcount / $data->sessionsgroup['numberofsessions'];
-        $from = time();
+        $weekspersession = round($weekcount / $data->sessionsgroup['numberofsessions']);
+        $sessionlength = ($week * $weekspersession);
 
         $activities = get_sequence($data);
 
-
-        foreach($activities as $cmid) {
-                $to = $from + $week;
-                $availability = '{"op":"&","c":[{"type":"date","d":">=","t":'.$from.'},{"type":"date","d":"<","t":'.$to.'}],"showc":[true,true]}';
-                $from = $to;
-                $DB->set_field('course_modules', 'availability', $availability, ['id'=>$cmid]);
+        $start = $cyclestart;
+        for ($week = 0; $week < $weekcount; $week++) {
+            $sessions[$week] = $cyclestart;
+            $start = $start + ($week * $weekspersession);
+        }
+        $activitycounter = 0;
+        $from = $cyclestart;
+        $activitycount = count($activities);
+        foreach ($sessions as $from) {
+            $to = $from + $sessionlength;
+            for ($i = 0; $i < $activitiespersession; $i++) {
+                if($activitycounter >= $activitycount) {
+                    continue;
+                }
+                $availability = '{"op":"&","c":[{"type":"date","d":">=","t":' . $from . '},{"type":"date","d":"<","t":' . $to . '}],"showc":[true,true]}';
+                $DB->set_field('course_modules', 'availability', $availability, ['id' => $activities[$activitycounter]]);
+                $activitycounter++;
+            }
         }
     }
 
@@ -108,18 +174,19 @@ function contentscheduler_update_instance($moduleinstance, $mform = null) {
     return $DB->update_record('contentscheduler', $moduleinstance);
 }
 
-function get_sequence($data) {
+function get_sequence($data)
+{
     global $DB;
     $sql = 'select sequence from {course_sections} where course = :course and sequence > "" order by section';
-    $coursesequence = $DB->get_records_sql($sql,['course' => $data->course]);
+    $coursesequence = $DB->get_records_sql($sql, ['course' => $data->course]);
     $activitiesordered = [];
-    $i=0;
-    foreach($coursesequence as $item) {
-        $temp= explode(',',$item->sequence);
-        foreach($temp as $t) {
-            if(array_key_exists($t,$data->activities)) {
-                 $activitiesordered[$i] = $t;
-                 $i++;
+    $i = 0;
+    foreach ($coursesequence as $item) {
+        $temp = explode(',', $item->sequence);
+        foreach ($temp as $t) {
+            if (array_key_exists($t, $data->activities)) {
+                $activitiesordered[$i] = $t;
+                $i++;
             }
         }
     }
@@ -132,7 +199,8 @@ function get_sequence($data) {
  * @param int $id Id of the module instance.
  * @return bool True if successful, false on failure.
  */
-function contentscheduler_delete_instance($id) {
+function contentscheduler_delete_instance($id)
+{
     global $DB;
 
     $exists = $DB->get_record('contentscheduler', array('id' => $id));

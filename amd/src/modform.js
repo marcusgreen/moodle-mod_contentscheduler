@@ -22,9 +22,30 @@
 export const init = () => {
     var selectAllCheckBox = document.getElementById('id_selectall');
     selectAllCheckBox.addEventListener('click', e => {
+        // Hidden.
         document.querySelectorAll("[id^='id_activities']").forEach(checkbox => {
             checkbox.checked = e.target.checked ? true : false;
         });
+        // Visible.
+        document.querySelectorAll("[id^='id_cmid_']").forEach(checkbox => {
+            checkbox.checked = e.target.checked ? true : false;
+        });
     });
+    var cmids = document.querySelectorAll('input[id^="id_cmid_"]');
+    cmids.forEach(function (e) {
+        e.addEventListener('click', cmidClick);
+    });
+
+    /**
+     *
+     * @param {*} e
+     */
+    function cmidClick(e) {
+            var id = e.currentTarget.id.split('_')[2];
+            var checkboxid = 'id_activities_'+id;
+            var checkbox = document.getElementById(checkboxid);
+            checkbox.checked = !checkbox.checked;
+    }
+
 };
 

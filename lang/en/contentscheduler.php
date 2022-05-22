@@ -66,7 +66,13 @@ $string['activitiespersession_help'] ='"Activities per session" sets the number 
 session.';
 $string['contentschedulername'] = 'String 1';
 $string['pluginadministration'] = 'Content sceduler administration';
-$string['contentschedulername_help'] = 'ABCDE1';
+$string['name'] = 'Name';
+$string['descriptions'] = 'Description';
+$string['questions'] = 'Question';
+$string['from'] = 'From';
+$string['to'] = 'To';
+
+
 
 
 

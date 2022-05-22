@@ -32,10 +32,22 @@
     {
     }
 }}
-<table border="1">
+<div class="card">
+    <div class="table-responsive">
+
+<table class = "table table-hover table-bordered table-striped " >
+    <header><th><input type='checkbox' name='selectall' title="Toggle selection of all items" id='id_selectall' checked>
+    </th></th><th>Name</th><th>Description</th><th>Q Count</th><th>From</th><th>To</th></header>
     {{#activities}}
     <tr>
-      <td><input type='checkbox' id='cmid_{{id}}' checked '></td>  <td>{{{name}}}</td><td>{{{intro}}}</td>
+      <td> <input name = "cmid[{{id}}]" type='checkbox' id='id_cmid_{{id}}' checked '>
+      </td>
+      <td><a href={{wwwroot}}/mod/quiz/view.php?id={{id}} target=_blank >{{{name}}}</a></td><td>{{{intro}}}</td>
+      <td>{{questioncount}}</td>
+      <td>{{{availability.from}}}</td><td>{{{availability.to}}}</td>
+
     </tr>
     {{/activities}}
 </table>
+</div>
+</div>

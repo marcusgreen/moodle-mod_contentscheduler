@@ -66,7 +66,8 @@ function contentscheduler_add_instance($moduleinstance, $mform = null)
 
     $id = $DB->insert_record('contentscheduler', $moduleinstance);
 
-    if ($mform->get_data()) {
+    if ($data = $mform->get_data()) {
+
     }
 
     return $id;
@@ -82,18 +83,27 @@ function show_contents($mform, $contents ){
     global $DB;
     foreach ($contents as $content) {
         if (count($content['modules']) > 0) {
+            $group = [];
+
             foreach ($content['modules'] as $module) {
+
                 $details = $DB->get_record($module['modname'], ['id' => $module['instance']]);
                 if(isset($details->intro)) {
                     $module['intro'] = pad($details->intro, 12);
                  } else {
                        $module['intro'] = pad(" ",12," ");
                  }
-                $group = [];
-                $availability  = get_availability($module);
-                $group[$module['id']] =  $mform->createElement('checkbox', $module['id'],pad($module['name'],12), $module['intro'].$availability);
-                $mform->addGroup($group, 'activities','', ' ', true);
+                // $availability  = get_availability($module);
+                // $group[$module['id']] =  $mform->createElement('checkbox', $module['id'],pad($module['name'],12), $module['intro'].$availability);
+                $el = $mform->createElement('advcheckbox', $module['id']);
+                $mform->setDefault('activities['.$module['id'].']',1);
+                $group[] =  $el;
+
             }
+           $mform->addElement('html',"<div class='hide'>");
+            $mform->addGroup($group, 'activities','', ' ',true,);
+            $mform->addElement('html',"</div>");
+
         }
     }
     return $mform;
@@ -108,7 +118,7 @@ function pad($string, $lettercount) {
 
 function get_availability($module) {
         global $DB;
-        $restrictiontext ="";
+        $availability =[];
 
         $record = $DB->get_record('course_modules', ['id' => $module['id']], 'availability');
         if($record->availability > "") {
@@ -116,12 +126,18 @@ function get_availability($module) {
             foreach($decoded->c as $restriction) {
                 if($restriction->type == "date") {
                     $operator = $restriction->d;
-                    $datetime = $restriction->t;
-                    $restrictiontext .= $operator . ":".date('D d M Y h:h', $datetime);
+                    if($operator == ">=") {
+                         $datetime = $restriction->t;
+                         $availability['from'] = date('D d M Y h:h', $datetime);
+                    } else {
+                         $datetime = $restriction->t;
+                         $availability['to'] = date('D d M Y h:h', $datetime);
+                    }
+
                 }
             }
         }
-        return $restrictiontext;
+        return $availability;
 }
 /**
  * Updates an instance of the mod_contentscheduler in the database.

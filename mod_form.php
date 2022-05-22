@@ -41,7 +41,7 @@ class mod_contentscheduler_mod_form extends moodleform_mod {
      * Defines forms elements
      */
     public function definition() {
-        global $CFG, $DB, $COURSE, $PAGE;
+        global $CFG,$COURSE, $PAGE, $OUTPUT,$DB;
 
         $PAGE->requires->js_call_amd('mod_contentscheduler/modform', 'init');
 
@@ -119,21 +119,24 @@ class mod_contentscheduler_mod_form extends moodleform_mod {
 
         $mform->addElement('header', 'activityheader', get_string('activities', 'mod_contentscheduler'));
         $mform->setExpanded('activityheader');
-        $mform->addElement('checkbox','selectall','Select all');
-        // foreach ($contents as $content) {
-        //     if (count($content['modules']) > 0) {
-        //         foreach ($content['modules'] as $module) {
-        //             $details = $DB->get_record($module['modname'], ['id' => $module['instance']]);
-        //             $availability = $DB->get_record('course_modules', ['id' => $module['instance']], 'availability');
-        //             $module['intro'] = strip_tags($details->intro);
-        //             $group = [];
-        //             $group[$module['id']] =  $mform->createElement('checkbox', $module['id'], $module['name'], $module['intro']);
-        //             $mform->addGroup($group, 'activities','', ' ', true);
-        //         }
-        //     }
-        // }
+        foreach ($contents as $content) {
+            if (count($content['modules']) > 0) {
+                foreach ($content['modules'] as $module) {
+                    $questions = $DB->get_records('quiz_slots',['quizid' => $module['instance']]);
+                    $details = $DB->get_record($module['modname'], ['id' => $module['instance']]);
+                    $availability = $DB->get_record('course_modules', ['id' => $module['instance']], 'availability');
+                    $module['questioncount'] = count($questions);
+                    $module['name'] = $details->name;
+                    $module['intro'] = strip_tags($details->intro);
+                    $module['availability']  = get_availability($module);
+                    $data['activities'][] = $module;
+                }
+            }
+        }
         $mform = show_contents($mform, $contents);
-
+        $data['wwwroot'] = $CFG->wwwroot;
+        $out =  $OUTPUT->render_from_template('mod_contentscheduler/activities', $data);
+        $mform->addElement('HTML',$out);
 
         // Add standard elements.
         $this->standard_coursemodule_elements();

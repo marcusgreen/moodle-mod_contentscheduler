@@ -57,6 +57,7 @@ $PAGE->set_url('/mod/contentscheduler/view.php', ['id' => $cm->id]);
 $PAGE->set_title(format_string($moduleinstance->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($modulecontext);
+redirect(new moodle_url($CFG->wwwroot.'/course/modedit.php',['update' => $cm->id,'return'=> 1]));
 
 echo $OUTPUT->header();
 

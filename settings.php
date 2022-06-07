@@ -24,5 +24,10 @@ if ($ADMIN->fulltree) {
             get_string('weekcount', 'contentscheduler'),
             get_string('weekcount_text', 'contentscheduler'),
             '16', PARAM_ALPHANUMEXT,3));
+   $settings->add(new admin_setting_configtext('contentscheduler/dateformat',
+            get_string('dateformat','contentscheduler'),
+            get_string('dateformat_text','contentscheduler'),
+           '1',PARAM_ALPHANUMEXT, 20));
+
 
 }

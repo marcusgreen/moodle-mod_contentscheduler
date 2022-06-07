@@ -62,6 +62,7 @@ class mod_contentscheduler_mod_form extends moodleform_mod {
         // Adding the standard "name" field.
         $mform->addElement('text', 'name', get_string('name', 'contentscheduler'), ['size' => '64']);
         $mform->setType('name',PARAM_TEXT);
+        $mform->setDefault('name', 'Content Schedule');
 
         $this->standard_intro_elements();
 
@@ -90,11 +91,11 @@ class mod_contentscheduler_mod_form extends moodleform_mod {
         $mform->addHelpButton('repeatgroup', 'repeat', 'mod_contentscheduler');
 
         $group = [];
-        $group[] = $mform->createElement('text', 'numberofsessions', get_string('numberofsessions', 'contentscheduler'), ['value' => 7, 'size' => '3']);
-        $group[] = $mform->createElement('advcheckbox', 'numberofsessionsenable', get_string('numberofsessionsenable', 'contentscheduler'));
-        $mform->addGroup($group, 'sessionsgroup', get_string('numberofsessions', 'contentscheduler'));
+        $group[] = $mform->createElement('text', 'sessioncount', get_string('sessioncount', 'contentscheduler'), ['value' => 7, 'size' => '3']);
+        $group[] = $mform->createElement('advcheckbox', 'sessioncountenable', get_string('sessioncountenable', 'contentscheduler'));
+        $mform->addGroup($group, 'sessionsgroup', get_string('sessioncount', 'contentscheduler'));
         $mform->setType('sessionsgroup', PARAM_RAW);
-        $mform->addHelpButton('sessionsgroup', 'numberofsessions', 'mod_contentscheduler');
+        $mform->addHelpButton('sessionsgroup', 'sessioncount', 'mod_contentscheduler');
 
         // Finish dates.
         $mform->addElement(
@@ -119,6 +120,8 @@ class mod_contentscheduler_mod_form extends moodleform_mod {
 
         $mform->addElement('header', 'activityheader', get_string('activities', 'mod_contentscheduler'));
         $mform->setExpanded('activityheader');
+        $sessionstarts = [];
+
         foreach ($contents as $content) {
             if (count($content['modules']) > 0) {
                 foreach ($content['modules'] as $module) {

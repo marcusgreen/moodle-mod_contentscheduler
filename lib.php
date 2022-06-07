@@ -64,11 +64,23 @@ function contentscheduler_add_instance($moduleinstance, $mform = null)
     //    $update->timecreated = time();
     //    $update->course = $formdata->course;
 
-    $id = $DB->insert_record('contentscheduler', $moduleinstance);
 
     if ($data = $mform->get_data()) {
-
+        $timing['id'] = null;
+        $timing['timestart'] = $data->timestart;
+        $timing['repeatcount'] =(int) $data->repeatgroup['repeat'];
+        $timing['sessioncount'] = (int) $data->sessionsgroup['sessioncount'];
+        $timing['timefinish'] = $data->timefinish;
+        $timing['activitiespersession'] = $data->activitiespersession;
     }
+
+    $timing = (object) $timing;
+
+    $id = $DB->insert_record('contentscheduler_timing',$timing);
+
+    $id = $DB->insert_record('contentscheduler', $moduleinstance);
+
+
 
     return $id;
 }
@@ -86,24 +98,20 @@ function show_contents($mform, $contents ){
             $group = [];
 
             foreach ($content['modules'] as $module) {
-
                 $details = $DB->get_record($module['modname'], ['id' => $module['instance']]);
                 if(isset($details->intro)) {
                     $module['intro'] = pad($details->intro, 12);
                  } else {
                        $module['intro'] = pad(" ",12," ");
                  }
-                // $availability  = get_availability($module);
-                // $group[$module['id']] =  $mform->createElement('checkbox', $module['id'],pad($module['name'],12), $module['intro'].$availability);
                 $el = $mform->createElement('advcheckbox', $module['id']);
                 $mform->setDefault('activities['.$module['id'].']',1);
                 $group[] =  $el;
 
             }
-           $mform->addElement('html',"<div class='hide'>");
+            $mform->addElement('html',"<div class='hide'>");
             $mform->addGroup($group, 'activities','', ' ',true,);
             $mform->addElement('html',"</div>");
-
         }
     }
     return $mform;

@@ -51,8 +51,8 @@ $string['weekcount_text'] = 'Week count help description';
 $string['weeks'] = 'week(s)';
 $string['weekcount'] = 'Week count';
 $string['repeatenable'] = 'Enable';
-$string['numberofsessions'] = 'Number of sessions';
-$string['numberofsessions_help'] = '"Number of sessions:" is an option where the total number of sessions/cycles
+$string['sessioncount'] = 'Number of sessions';
+$string['sessioncount_help'] = '"Number of sessions:" is an option where the total number of sessions/cycles
 can be set. Depending on the start and finish dates, the length of these
 sessions will be automatically evenly distributed.
 E.g. Say the number of weeks between the start date and the finish date was
@@ -60,9 +60,9 @@ E.g. Say the number of weeks between the start date and the finish date was
 session would be 2 weeks, 16 weeks / 8 sessions. However, if the sessions was
 set at 4, then the period would be 4 weeks, 16 weeks/4 sessions. Finally if the
 sessions was 16, it would be a cycle every week.';
-$string['numberofsessionsenable'] = 'Enable';
+$string['sessioncountenable'] = 'Enable';
 $string['activitiespersession'] ='Activities per session';
-$string['activitiespersession_help'] ='"Activities per session" sets the number of activities that are available in each
+$string['sessioncount_help'] ='"Activities per session" sets the number of activities that are available in each
 session.';
 $string['contentschedulername'] = 'String 1';
 $string['pluginadministration'] = 'Content sceduler administration';
@@ -71,6 +71,9 @@ $string['descriptions'] = 'Description';
 $string['questions'] = 'Question';
 $string['from'] = 'From';
 $string['to'] = 'To';
+$string['dateformat'] = 'Date format';
+$string['dateformat_text'] = 'Date format explanation xxxxx';
+
 
 
 

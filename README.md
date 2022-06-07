@@ -2,7 +2,7 @@
 
 Make contents available on a timed release basis. For example a set of quizzes can become available, then unavailable one day at a time.
 
-TODO Provide more detailed description here.
+This project was funded by Sojo University Japan and initiated by Rob Hirschel and Chris Tempest.
 
 ## Installing via uploaded ZIP file ##
 

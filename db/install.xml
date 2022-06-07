@@ -30,10 +30,10 @@
     <TABLE NAME="contentscheduler_timing" COMMENT="When content will be available">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="start" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="datetime when activity becomes available"/>
-        <FIELD NAME="repeat" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="1" SEQUENCE="false" COMMENT="Number of weeks over which to add new activiti/ies"/>
+        <FIELD NAME="timestart" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="datetime when activity becomes available"/>
+        <FIELD NAME="repeatcount" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="1" SEQUENCE="false" COMMENT="Number of weeks over which to add new activiti/ies"/>
         <FIELD NAME="sessioncount" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="How many activities in total to deliver (CONFIRM)"/>
-        <FIELD NAME="finish" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="datetime when last set of activities will be available"/>
+        <FIELD NAME="timefinish" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="datetime when last set of activities will be available"/>
         <FIELD NAME="activitiespersession" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Activities per repeated session, e.g. 5 quizzes per week"/>
       </FIELDS>
       <KEYS>

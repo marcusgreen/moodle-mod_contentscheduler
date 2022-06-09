@@ -64,9 +64,10 @@ function contentscheduler_add_instance($moduleinstance, $mform = null)
     //    $update->timecreated = time();
     //    $update->course = $formdata->course;
 
+    $schedulerid = $DB->insert_record('contentscheduler', $moduleinstance);
 
     if ($data = $mform->get_data()) {
-        $timing['id'] = null;
+        $timing['contentscheduler'] = $schedulerid;
         $timing['timestart'] = $data->timestart;
         $timing['repeatcount'] =(int) $data->repeatgroup['repeat'];
         $timing['sessioncount'] = (int) $data->sessionsgroup['sessioncount'];
@@ -78,7 +79,6 @@ function contentscheduler_add_instance($moduleinstance, $mform = null)
 
     $id = $DB->insert_record('contentscheduler_timing',$timing);
 
-    $id = $DB->insert_record('contentscheduler', $moduleinstance);
 
 
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/contentscheduler/db" VERSION="20220418" COMMENT="XMLDB file for Moodle mod_contentscheduler"
+<XMLDB PATH="mod/contentscheduler/db" VERSION="20220609" COMMENT="XMLDB file for Moodle mod_contentscheduler"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -30,6 +30,7 @@
     <TABLE NAME="contentscheduler_timing" COMMENT="When content will be available">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="contentscheduler" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="id of the contentscheduler"/>
         <FIELD NAME="timestart" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="datetime when activity becomes available"/>
         <FIELD NAME="repeatcount" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="1" SEQUENCE="false" COMMENT="Number of weeks over which to add new activiti/ies"/>
         <FIELD NAME="sessioncount" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="How many activities in total to deliver (CONFIRM)"/>
@@ -38,6 +39,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="contentscheduler_timing" TYPE="foreign" FIELDS="contentscheduler" REFTABLE="contentscheduler" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
   </TABLES>

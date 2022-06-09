@@ -43,6 +43,14 @@ class mod_contentscheduler_mod_form extends moodleform_mod {
     public function definition() {
         global $CFG,$COURSE, $PAGE, $OUTPUT,$DB;
 
+
+        $update = optional_param('update', false, PARAM_INT);
+
+        $cm = $DB->get_record('course_modules',['id' => $update]);
+
+        $timing = $DB->get_record('contentscheduler_timing',['id' => $cm->instance]);
+
+
         $PAGE->requires->js_call_amd('mod_contentscheduler/modform', 'init');
 
         require_once($CFG->dirroot . '/course/externallib.php');
@@ -81,6 +89,7 @@ class mod_contentscheduler_mod_form extends moodleform_mod {
             get_string('start', 'contentscheduler'),
             self::$datefieldoptions
         );
+        $mform->setDefault('timestart',$timing->timestart);
         $mform->addHelpButton('timestart', 'start', 'contentscheduler');
 
         $group[] = $mform->createElement('text', 'repeat', get_string('repeat', 'contentscheduler'), ['value' => 1, 'size' => '3']);

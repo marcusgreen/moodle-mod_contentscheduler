@@ -64,7 +64,8 @@ function contentscheduler_add_instance($moduleinstance, $mform = null)
     //    $update->timecreated = time();
     //    $update->course = $formdata->course;
 
-    $schedulerid = $DB->insert_record('contentscheduler', $moduleinstance);
+    $id = $DB->insert_record('contentscheduler', $moduleinstance);
+    return $id;
 
     // if ($data = $mform->get_data()) {
     //     $timing['contentscheduler'] = $schedulerid;
@@ -82,7 +83,7 @@ function contentscheduler_add_instance($moduleinstance, $mform = null)
 
 
 
-    return $id;
+   // return $id;
 }
 
 function get_contents(int $courseid, $options): array

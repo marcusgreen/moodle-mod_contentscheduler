@@ -66,18 +66,18 @@ function contentscheduler_add_instance($moduleinstance, $mform = null)
 
     $schedulerid = $DB->insert_record('contentscheduler', $moduleinstance);
 
-    if ($data = $mform->get_data()) {
-        $timing['contentscheduler'] = $schedulerid;
-        $timing['timestart'] = $data->timestart;
-        $timing['repeatcount'] =(int) $data->repeatgroup['repeat'];
-        $timing['sessioncount'] = (int) $data->sessionsgroup['sessioncount'];
-        $timing['timefinish'] = $data->timefinish;
-        $timing['activitiespersession'] = $data->activitiespersession;
-    }
+    // if ($data = $mform->get_data()) {
+    //     $timing['contentscheduler'] = $schedulerid;
+    //     $timing['timestart'] = $data->timestart;
+    //     $timing['repeatcount'] =(int) $data->repeatgroup['repeat'];
+    //     $timing['sessioncount'] = (int) $data->sessionsgroup['sessioncount'];
+    //     $timing['timefinish'] = $data->timefinish;
+    //     $timing['activitiespersession'] = $data->activitiespersession;
+    // }
 
-    $timing = (object) $timing;
+    // $timing = (object) $timing;
 
-    $id = $DB->insert_record('contentscheduler_timing',$timing);
+    // $id = $DB->insert_record('contentscheduler_timing',$timing);
 
 
 
@@ -161,37 +161,41 @@ function contentscheduler_update_instance($moduleinstance, $mform = null)
 {
     global $DB;
     if ($data = $mform->get_data()) {
-        $week = strtotime('7 day', 0);
-        $activitiespersession = $data->activitiespersession;
-        $cyclestart = $data->timestart;
-        $cyclefinish = $data->timefinish;
-        $duration = $cyclefinish - $cyclestart;
-        $weekcount = $duration / $week;
-        $weekspersession = round($weekcount / $data->sessionsgroup['numberofsessions']);
-        $sessionlength = ($week * $weekspersession);
+           $moduleinstance->repeatcount =  $data->repeatgroup['repeatcount'];
+           $moduleinstance->sessioncount =  $data->sessionsgroup['sessioncount'];
 
-        $activities = get_sequence($data);
-
-        $start = $cyclestart;
-        for ($week = 0; $week < $weekcount; $week++) {
-            $sessions[$week] = $cyclestart;
-            $start = $start + ($week * $weekspersession);
-        }
-        $activitycounter = 0;
-        $from = $cyclestart;
-        $activitycount = count($activities);
-        foreach ($sessions as $from) {
-            $to = $from + $sessionlength;
-            for ($i = 0; $i < $activitiespersession; $i++) {
-                if($activitycounter >= $activitycount) {
-                    continue;
-                }
-                $availability = '{"op":"&","c":[{"type":"date","d":">=","t":' . $from . '},{"type":"date","d":"<","t":' . $to . '}],"showc":[true,true]}';
-                $DB->set_field('course_modules', 'availability', $availability, ['id' => $activities[$activitycounter]]);
-                $activitycounter++;
-            }
-        }
     }
+    //     $week = strtotime('7 day', 0);
+    //     $activitiespersession = $data->activitiespersession;
+    //     $schedulestart = $data->timestart;
+    //     $schedulefinish = $data->timefinish;
+    //     $duration = $schedulefinish - $schedulestart;
+    //     $weekcount = $duration / $week;
+    //     $weekspersession = round($weekcount / $data->sessionsgroup['numberofsessions']);
+    //     $sessionlength = ($week * $weekspersession);
+
+    //     $activities = get_sequence($data);
+
+    //     $start = $schedulestart;
+    //     for ($week = 0; $week < $weekcount; $week++) {
+    //         $sessions[$week] = $schedulestart;
+    //         $start = $start + ($week * $weekspersession);
+    //     }
+    //     $activitycounter = 0;
+    //     $from = $schedulestart;
+    //     $activitycount = count($activities);
+    //     foreach ($sessions as $from) {
+    //         $to = $from + $sessionlength;
+    //         for ($i = 0; $i < $activitiespersession; $i++) {
+    //             if($activitycounter >= $activitycount) {
+    //                 continue;
+    //             }
+    //             $availability = '{"op":"&","c":[{"type":"date","d":">=","t":' . $from . '},{"type":"date","d":"<","t":' . $to . '}],"showc":[true,true]}';
+    //             $DB->set_field('course_modules', 'availability', $availability, ['id' => $activities[$activitycounter]]);
+    //             $activitycounter++;
+    //         }
+    //     }
+   // }
 
     $moduleinstance->timemodified = time();
     $moduleinstance->id = $moduleinstance->instance;

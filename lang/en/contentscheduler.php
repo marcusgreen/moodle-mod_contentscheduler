@@ -33,26 +33,29 @@ $string['timing'] = 'Timing';
 $string['activities'] = 'Activities';
 $string['contentschedulersettings'] = 'Settings';
 $string['contentschedulerfieldset'] = 'Fieldset';
-$string['start'] = 'Start';
-$string['start_help'] = 'The time periods/intervals that activities are available are set here. First at the
+$string['schedulestart'] = 'Start';
+$string['schedulestart_help'] = 'The time periods/intervals that activities are available are set here. First at the
 "Start:" section, the day, month and year that the activity cycle will start is set. The
 blue calendar will open a pop-up calendar to select dates as an option.';
-$string['timefinish'] = 'Finish';
-$string['timefinish_help'] = '"Finish": Is the date that all activities/final session will close. The time will remain
+$string['schedulefinish'] = 'Finish';
+$string['schedulefinish_help'] = 'The date that all activities/final session will close. The time will remain
 this time to finish a session before the next one begins.';
+$string['repeatcount'] = 'Repeat count';
+$string['repeatcount_text'] = 'Help for repeatcount in settings';
 $string['repeat'] = 'Repeat every';
 $string['repeat_text'] = 'Repeat settings help';
 $string['repeat_help'] =
- '"Repeat every:" is an option that decides how long the intervals are. E.g. A new
+ 'Decides how long the intervals are. E.g. A new
  set of activities will be available every 2 weeks and the currently available ones
  will then become unavailable.';
-$string['weekcount'] = 'Week count';
-$string['weekcount_text'] = 'Week count help description';
+$string['sessioncount'] = 'Week count';
+$string['sessioncount_text'] = 'Week count help description';
 $string['weeks'] = 'week(s)';
-$string['weekcount'] = 'Week count';
+// $string['weekcount'] = 'Week count';
 $string['repeatenable'] = 'Enable';
+$string['sessioncount_text'] = 'Session count help for settings';
 $string['sessioncount'] = 'Number of sessions';
-$string['sessioncount_help'] = '"Number of sessions:" is an option where the total number of sessions/cycles
+$string['sessioncount_help'] = 'The total number of sessions/cycles
 can be set. Depending on the start and finish dates, the length of these
 sessions will be automatically evenly distributed.
 E.g. Say the number of weeks between the start date and the finish date was
@@ -61,9 +64,10 @@ session would be 2 weeks, 16 weeks / 8 sessions. However, if the sessions was
 set at 4, then the period would be 4 weeks, 16 weeks/4 sessions. Finally if the
 sessions was 16, it would be a cycle every week.';
 $string['sessioncountenable'] = 'Enable';
-$string['activitiespersession'] ='Activities per session';
-$string['sessioncount_help'] ='"Activities per session" sets the number of activities that are available in each
-session.';
+$string['activitiespersession'] = 'Activities per session';
+$string['activitiespersession_text'] = 'Set the number of activitie that are available in each session, e.g. if a session is one week 5 will give you one per day';
+$string['activitiespersession_help'] = 'Activities per serssion XXX';
+
 $string['contentschedulername'] = 'String 1';
 $string['pluginadministration'] = 'Content sceduler administration';
 $string['name'] = 'Name';
@@ -73,6 +77,10 @@ $string['from'] = 'From';
 $string['to'] = 'To';
 $string['dateformat'] = 'Date format';
 $string['dateformat_text'] = 'Date format explanation xxxxx';
+$string['contentschedulername_help'] = 'Content scheduler help information';
+
+
+
 
 
 

@@ -43,12 +43,12 @@ class mod_contentscheduler_mod_form extends moodleform_mod {
     public function definition() {
         global $CFG,$COURSE, $PAGE, $OUTPUT,$DB;
 
-
+        $current = $this->get_current();
         $update = optional_param('update', false, PARAM_INT);
 
         $cm = $DB->get_record('course_modules',['id' => $update]);
 
-        $timing = $DB->get_record('contentscheduler_timing',['id' => $cm->instance]);
+        // $timing = $DB->get_record('contentscheduler_timing',['id' => $cm->instance]);
 
 
         $PAGE->requires->js_call_amd('mod_contentscheduler/modform', 'init');
@@ -85,22 +85,26 @@ class mod_contentscheduler_mod_form extends moodleform_mod {
         // Start dates.
         $mform->addElement(
             'date_time_selector',
-            'timestart',
-            get_string('start', 'contentscheduler'),
-            self::$datefieldoptions
+            'schedulestart',
+            get_string('schedulestart', 'contentscheduler'),
+           $current->schedulestart ?? 0
         );
-        $mform->setDefault('timestart',$timing->timestart);
-        $mform->addHelpButton('timestart', 'start', 'contentscheduler');
 
-        $group[] = $mform->createElement('text', 'repeat', get_string('repeat', 'contentscheduler'), ['value' => 1, 'size' => '3']);
+        $mform->addHelpButton('schedulestart', 'schedulestart', 'contentscheduler');
+
+        $repeatcount = $current->repeatcount ?? get_config('contentscheduler','repeatcount');
+        $group[] = $mform->createElement('text', 'repeatcount', get_string('repeat', 'contentscheduler'), ['value'=> $repeatcount ?? 0,'size' => '3']);
         $group[] = $mform->createElement('html', get_string('weeks', 'contentscheduler'));
         $group[] = $mform->createElement('advcheckbox', 'repeatenable', get_string('repeatenable', 'contentscheduler'));
-        $mform->addGroup($group, 'repeatgroup', get_string('repeat', 'contentscheduler') . '&nbsp;&nbsp;','', ' ', true);
+        $mform->addGroup($group, 'repeatgroup', get_string('repeat', 'contentscheduler') . '&nbsp;&nbsp;','', ' ', false);
+
         $mform->setType('repeatgroup', PARAM_RAW);
         $mform->addHelpButton('repeatgroup', 'repeat', 'mod_contentscheduler');
 
         $group = [];
-        $group[] = $mform->createElement('text', 'sessioncount', get_string('sessioncount', 'contentscheduler'), ['value' => 7, 'size' => '3']);
+        $sessioncount = $current->sessioncount ?? get_config('contentscheduler','sessioncount');
+
+        $group[] = $mform->createElement('text', 'sessioncount', get_string('sessioncount', 'contentscheduler'), ['value' => $sessioncount, 'size' => '3']);
         $group[] = $mform->createElement('advcheckbox', 'sessioncountenable', get_string('sessioncountenable', 'contentscheduler'));
         $mform->addGroup($group, 'sessionsgroup', get_string('sessioncount', 'contentscheduler'));
         $mform->setType('sessionsgroup', PARAM_RAW);
@@ -109,20 +113,22 @@ class mod_contentscheduler_mod_form extends moodleform_mod {
         // Finish dates.
         $mform->addElement(
             'date_time_selector',
-            'timefinish',
-            get_string('timefinish', 'contentscheduler'),
-            self::$datefieldoptions
+            'schedulefinish',
+            get_string('schedulefinish', 'contentscheduler'),
+            $current->schedulefinish ?? 0
         );
-        $mform->setType('timefinish', PARAM_INT);
+        $mform->setType('schedulefinish', PARAM_INT);
 
         $week = strtotime('7 day', 0);
-        $weekcount = get_config('contentscheduler', 'weekcount');
-        $finishdate = time()+ ($week * $weekcount);
-        $mform->setDefault('timefinish', $finishdate);
+        $sessioncount = get_config('sessioncount','contentscheduler');
+        $finishdate = time()+ ($week * $sessioncount);
+        $mform->setDefault('schedulefinish', $finishdate);
 
-        $mform->addHelpButton('timefinish', 'timefinish', 'mod_contentscheduler');
+        $mform->addHelpButton('schedulefinish', 'schedulefinish', 'mod_contentscheduler');
 
-        $mform->addElement('text', 'activitiespersession', get_string('activitiespersession', 'contentscheduler'), ['value' => 7, 'size' => '3']);
+        $activitiespersession =  $current->activitiespersession ?? get_config('contentscheduler','activitiespersession');
+
+        $mform->addElement('text', 'activitiespersession', get_string('activitiespersession', 'contentscheduler'), ['value' => $activitiespersession,'size' => '3']);
         $mform->setType('activitiespersession',PARAM_INT);
 
         $mform->addHelpButton('activitiespersession', 'activitiespersession', 'mod_contentscheduler');

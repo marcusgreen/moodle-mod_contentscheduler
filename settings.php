@@ -16,18 +16,23 @@
 
 
 if ($ADMIN->fulltree) {
-    $settings->add(new admin_setting_configtext('contentscheduler/repeat',
-             get_string('repeat','contentscheduler'),
-             get_string('repeat_text','contentscheduler'),
+    $settings->add(new admin_setting_configtext('contentscheduler/repeatcount',
+             get_string('repeatcount','contentscheduler'),
+             get_string('repeatcount_text','contentscheduler'),
             '1',PARAM_ALPHANUMEXT, 3));
-    $settings->add(new admin_setting_configtext('contentscheduler/weekcount',
-            get_string('weekcount', 'contentscheduler'),
-            get_string('weekcount_text', 'contentscheduler'),
+    $settings->add(new admin_setting_configtext('contentscheduler/sessioncount',
+            get_string('sessioncount', 'contentscheduler'),
+            get_string('sessioncount_text', 'contentscheduler'),
             '16', PARAM_ALPHANUMEXT,3));
-   $settings->add(new admin_setting_configtext('contentscheduler/dateformat',
-            get_string('dateformat','contentscheduler'),
-            get_string('dateformat_text','contentscheduler'),
-           '1',PARAM_ALPHANUMEXT, 20));
+
+$settings->add(new admin_setting_configtext('contentscheduler/activitiespersession',
+            get_string('activitiespersession', 'contentscheduler'),
+            get_string('activitiespersession_text', 'contentscheduler'),
+            '5', PARAM_ALPHANUMEXT,3));
+//    $settings->add(new admin_setting_configtext('contentscheduler/dateformat',
+//             get_string('dateformat','contentscheduler'),
+//             get_string('dateformat_text','contentscheduler'),
+//            '1',PARAM_ALPHANUMEXT, 20));
 
 
 }

@@ -42,8 +42,10 @@ $string['schedulefinish_help'] = 'The date that all activities/final session wil
 this time to finish a session before the next one begins.';
 $string['repeatcount'] = 'Repeat count';
 $string['repeatcount_text'] = 'Help for repeatcount in settings';
-$string['repeat'] = 'Repeat every';
+$string['repeat'] = 'Repeat frequency';
 $string['repeat_text'] = 'Repeat settings help';
+$string['repeatcounterror'] = 'Repeat frequency must be more than zero';
+$string['activitiespersessionerror'] = 'Activities per session must be more than zero';
 $string['repeat_help'] =
  'Decides how long the intervals are. E.g. A new
  set of activities will be available every 2 weeks and the currently available ones
@@ -64,6 +66,7 @@ session would be 2 weeks, 16 weeks / 8 sessions. However, if the sessions was
 set at 4, then the period would be 4 weeks, 16 weeks/4 sessions. Finally if the
 sessions was 16, it would be a cycle every week.';
 $string['sessioncountenable'] = 'Enable';
+$string['sessionscounterror'] = 'Number of sessions must be more than zero';
 $string['activitiespersession'] = 'Activities per session';
 $string['activitiespersession_text'] = 'Set the number of activitie that are available in each session, e.g. if a session is one week 5 will give you one per day';
 $string['activitiespersession_help'] = 'How many items per session, for example if set to 10 and "Repeat every" is set to 2 (weeks), students would see 5 activities per week';

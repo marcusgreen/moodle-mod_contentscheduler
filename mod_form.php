@@ -162,4 +162,23 @@ class mod_contentscheduler_mod_form extends moodleform_mod {
         // Add standard buttons.
         $this->add_action_buttons();
     }
+
+    public function validation($fromform, $data) {
+
+        $errors = [];
+        if ($fromform['activitiespersession'] < 1) {
+            $errors['activitiespersession'] = get_string('activitiespersessionerror','contentscheduler');
+        }
+        if ($fromform['repeatgroup']['repeatcount'] < 1) {
+            $errors['repeatgroup'] = get_string('repeatcounterror', 'contentscheduler');
+        }
+        if ($fromform['sessionsgroup']['sessioncount'] < 1) {
+            $errors['sessionsgroup'] = get_string('sessionscounterror', 'contentscheduler');
+        }
+        if ($errors) {
+            return $errors;
+        } else {
+            return true;
+        }
+    }
 }

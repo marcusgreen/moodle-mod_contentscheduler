@@ -44,13 +44,7 @@ class mod_contentscheduler_mod_form extends moodleform_mod {
         global $CFG,$COURSE, $PAGE, $OUTPUT,$DB;
 
         $current = $this->get_current();
-        $update = optional_param('update', false, PARAM_INT);
-
-        $cm = $DB->get_record('course_modules',['id' => $update]);
-
-        // $timing = $DB->get_record('contentscheduler_timing',['id' => $cm->instance]);
-
-
+      
         $PAGE->requires->js_call_amd('mod_contentscheduler/modform', 'init');
 
         require_once($CFG->dirroot . '/course/externallib.php');
@@ -70,7 +64,8 @@ class mod_contentscheduler_mod_form extends moodleform_mod {
         // Adding the standard "name" field.
         $mform->addElement('text', 'name', get_string('name', 'contentscheduler'), ['size' => '64']);
         $mform->setType('name',PARAM_TEXT);
-        $mform->setDefault('name', 'Content Schedule');
+
+        $mform->setDefault('name',  get_config('contentscheduler','defaultname'));
 
         $this->standard_intro_elements();
 

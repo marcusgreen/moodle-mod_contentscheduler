@@ -26,6 +26,6 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'mod_contentscheduler';
 $plugin->release = '0.1.0';
-$plugin->version = 2022041804;
+$plugin->version = 2022041807;
 $plugin->requires = 2020110900;
 $plugin->maturity = MATURITY_ALPHA;

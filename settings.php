@@ -29,10 +29,9 @@ $settings->add(new admin_setting_configtext('contentscheduler/activitiespersessi
             get_string('activitiespersession', 'contentscheduler'),
             get_string('activitiespersession_text', 'contentscheduler'),
             '5', PARAM_ALPHANUMEXT,3));
-//    $settings->add(new admin_setting_configtext('contentscheduler/dateformat',
-//             get_string('dateformat','contentscheduler'),
-//             get_string('dateformat_text','contentscheduler'),
-//            '1',PARAM_ALPHANUMEXT, 20));
-
+$settings->add(new admin_setting_configtext('contentscheduler/defaultname',
+            get_string('defaultname', 'contentscheduler'),
+            get_string('defaultname_text', 'contentscheduler'),
+            'Content schedule', PARAM_RAW, 40));
 
 }

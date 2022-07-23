@@ -14,7 +14,6 @@
         <FIELD NAME="intro" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Activity description."/>
         <FIELD NAME="introformat" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="The format of the intro field."/>
         <FIELD NAME="repeatcount" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="1" SEQUENCE="false" COMMENT="Number of weeks over which to add new activiti/ies"/>
-        <FIELD NAME="sessioncount" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="How many activities in total to deliver (CONFIRM)"/>
         <FIELD NAME="activitiespersession" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Activities per repeated session, e.g. 5 quizzes per week"/>
         <FIELD NAME="schedulestart" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="datetime when activity becomes available"/>
         <FIELD NAME="schedulefinish" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="datetime when last set of activities will be available"/>

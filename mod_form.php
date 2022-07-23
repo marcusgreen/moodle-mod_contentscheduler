@@ -44,7 +44,7 @@ class mod_contentscheduler_mod_form extends moodleform_mod {
         global $CFG,$COURSE, $PAGE, $OUTPUT,$DB;
 
         $current = $this->get_current();
-      
+
         $PAGE->requires->js_call_amd('mod_contentscheduler/modform', 'init');
 
         require_once($CFG->dirroot . '/course/externallib.php');
@@ -90,20 +90,12 @@ class mod_contentscheduler_mod_form extends moodleform_mod {
         $repeatcount = $current->repeatcount ?? get_config('contentscheduler','repeatcount');
         $group[] = $mform->createElement('text', 'repeatcount', get_string('repeat', 'contentscheduler'), ['value'=> $repeatcount ?? 0,'size' => '3']);
         $group[] = $mform->createElement('html', get_string('weeks', 'contentscheduler'));
-        $group[] = $mform->createElement('advcheckbox', 'repeatenable', get_string('repeatenable', 'contentscheduler'));
+
         $mform->addGroup($group, 'repeatgroup', get_string('repeat', 'contentscheduler') . '&nbsp;&nbsp;','', ' ', false);
+        $mform->addRule('repeatgroup', null, 'required', null ,'client');
 
         $mform->setType('repeatgroup', PARAM_RAW);
         $mform->addHelpButton('repeatgroup', 'repeat', 'mod_contentscheduler');
-
-        $group = [];
-        $sessioncount = $current->sessioncount ?? get_config('contentscheduler','sessioncount');
-
-        $group[] = $mform->createElement('text', 'sessioncount', get_string('sessioncount', 'contentscheduler'), ['value' => $sessioncount, 'size' => '3']);
-        $group[] = $mform->createElement('advcheckbox', 'sessioncountenable', get_string('sessioncountenable', 'contentscheduler'));
-        $mform->addGroup($group, 'sessionsgroup', get_string('sessioncount', 'contentscheduler'));
-        $mform->setType('sessionsgroup', PARAM_RAW);
-        $mform->addHelpButton('sessionsgroup', 'sessioncount', 'mod_contentscheduler');
 
         // Finish dates.
         $mform->addElement(
@@ -116,21 +108,21 @@ class mod_contentscheduler_mod_form extends moodleform_mod {
 
         $week = strtotime('7 day', 0);
         $sessioncount = get_config('sessioncount','contentscheduler');
-        $finishdate = time()+ ($week * $sessioncount);
+        $finishdate = time() + ($week * $sessioncount);
         $mform->setDefault('schedulefinish', $finishdate);
 
         $mform->addHelpButton('schedulefinish', 'schedulefinish', 'mod_contentscheduler');
 
-        $activitiespersession =  $current->activitiespersession ?? get_config('contentscheduler','activitiespersession');
+        $activitiespersession = $current->activitiespersession ?? get_config('contentscheduler','activitiespersession');
 
-        $mform->addElement('text', 'activitiespersession', get_string('activitiespersession', 'contentscheduler'), ['value' => $activitiespersession,'size' => '3']);
-        $mform->setType('activitiespersession',PARAM_INT);
+        $mform->addElement('text', 'activitiespersession', get_string('activitiespersession', 'contentscheduler'), ['value' => $activitiespersession, 'size' => '3']);
+        $mform->addRule('activitiespersession', null, 'required', null, 'client');
+        $mform->setType('activitiespersession', PARAM_INT);
 
         $mform->addHelpButton('activitiespersession', 'activitiespersession', 'mod_contentscheduler');
 
         $mform->addElement('header', 'activityheader', get_string('activities', 'mod_contentscheduler'));
         $mform->setExpanded('activityheader');
-        $sessionstarts = [];
 
         foreach ($contents as $content) {
             if (count($content['modules']) > 0) {
@@ -167,9 +159,7 @@ class mod_contentscheduler_mod_form extends moodleform_mod {
         if ($fromform['repeatgroup']['repeatcount'] < 1) {
             $errors['repeatgroup'] = get_string('repeatcounterror', 'contentscheduler');
         }
-        if ($fromform['sessionsgroup']['sessioncount'] < 1) {
-            $errors['sessionsgroup'] = get_string('sessionscounterror', 'contentscheduler');
-        }
+
         if ($errors) {
             return $errors;
         } else {

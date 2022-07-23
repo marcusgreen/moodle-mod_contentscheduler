@@ -14,24 +14,39 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Data to control defaults when creating an instance of dripreleaswe
+ *
+ * @package    mod_driprelease
+ * @copyright  2022Marcus Green
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+defined('MOODLE_INTERNAL') || die();
 
 if ($ADMIN->fulltree) {
-    $settings->add(new admin_setting_configtext('contentscheduler/repeatcount',
-             get_string('repeatcount','contentscheduler'),
-             get_string('repeatcount_text','contentscheduler'),
-            '1',PARAM_ALPHANUMEXT, 3));
-    $settings->add(new admin_setting_configtext('contentscheduler/sessioncount',
-            get_string('sessioncount', 'contentscheduler'),
-            get_string('sessioncount_text', 'contentscheduler'),
-            '16', PARAM_ALPHANUMEXT,3));
+        $settings->add(new admin_setting_configtext(
+                'contentscheduler/repeatcount',
+                get_string('repeatcount', 'contentscheduler'),
+                get_string('repeatcount_text', 'contentscheduler'),
+                '1',
+                PARAM_ALPHANUMEXT,
+                3
+        ));
 
-$settings->add(new admin_setting_configtext('contentscheduler/activitiespersession',
-            get_string('activitiespersession', 'contentscheduler'),
-            get_string('activitiespersession_text', 'contentscheduler'),
-            '5', PARAM_ALPHANUMEXT,3));
-$settings->add(new admin_setting_configtext('contentscheduler/defaultname',
-            get_string('defaultname', 'contentscheduler'),
-            get_string('defaultname_text', 'contentscheduler'),
-            'Content schedule', PARAM_RAW, 40));
-
+        $settings->add(new admin_setting_configtext(
+                'contentscheduler/activitiespersession',
+                get_string('activitiespersession', 'contentscheduler'),
+                get_string('activitiespersession_text', 'contentscheduler'),
+                '5',
+                PARAM_ALPHANUMEXT,
+                3
+        ));
+        $settings->add(new admin_setting_configtext(
+                'contentscheduler/defaultname',
+                get_string('defaultname', 'contentscheduler'),
+                get_string('defaultname_text', 'contentscheduler'),
+                'Content schedule',
+                PARAM_RAW,
+                40
+        ));
 }
